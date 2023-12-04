@@ -1,0 +1,23 @@
+const measures = ['Unidad(es)', 'Kilogramos (kg)', 'Gramos (g)', 'Litros (L)', 'Mililitros (ml)'];
+
+export const createDetailP = async (req, res) => {
+   const { id } = req.params;   
+   const { Supplies_ID, Measure, Lot_ProductDetail } = req.body
+
+   if (!allowedMeasures.includes(Measure)) {
+       return res.status(400).json({ message: 'Invalid Measure value.' });
+   }
+
+   try {
+       const createDetail = await productDetail.create({
+           Product_ID : id,
+           Supplies_ID : Supplies_ID,
+           Measure,
+           Lot_ProductDetail,
+           State: true 
+       })
+       res.json(createDetail);
+   } catch (error) {
+       return res.status(500).json({ message: error.message });
+   }
+};
