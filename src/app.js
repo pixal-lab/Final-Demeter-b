@@ -19,8 +19,6 @@ import productRoutes from './routes/product.routes.js';
 const app = express();
 
 app.use(cors({
-    credentials :  true, 
-    origin: 'http://localhost:5173'
 }));
 
 app.use(morgan('dev'));
