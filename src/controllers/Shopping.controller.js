@@ -92,7 +92,6 @@ export const getShopingByProvider = async (req, res) => {
     try {
 
         const shoppingBySupplier = await shopping.findAll({
-            group: "Supplier_ID",
             include: [{
                 model: supplier,
                 required: true
