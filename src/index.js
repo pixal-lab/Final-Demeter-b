@@ -1,6 +1,6 @@
 import app from './app.js'
 import { sequelize } from './db/dataBase.js'
-const port = process.env.PORT || 4080
+const port = process.env.MYSQLPORT || 4080
 
 import './models/permission.model.js'
 import './models/module.model.js'
