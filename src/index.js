@@ -11,7 +11,7 @@ import './models/losses.model.js'
 
 async function main() {
     try{
-        await sequelize.sync({force: true})
+        await sequelize.sync({force: false})
         app.listen(port);
         console.log('Server on port ', port);
     } catch (error) {

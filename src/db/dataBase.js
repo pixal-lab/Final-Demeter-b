@@ -1,14 +1,18 @@
 import { Sequelize } from 'sequelize';
-const databaseURL = process.env.MYSQL_URL || "demeterfinal";
 
-const config = {
-  username: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD || "",
-  database: process.env.MYSQLDATABASE,
-  host: process.env.MYSQLHOST,
-  dialect: 'mysql', // Asegúrate de especificar el dialecto aquí
-};
+
+const dbConfig = {
+  host: process.env.BD_HOST || "localhost",
+  port: process.env.BD_POR || "3306",
+  username: process.env.BD_USER || 'root',
+  password: process.env.BD_PASSWORD || "",
+  database: process.env.BD_NAME || "demeterfinal",
+  url : "demeterfinal",
+  dialect: 'mysql' 
+  
+}
 
 export const sequelize = new Sequelize(
-  config
+  
+  dbConfig,
 );
