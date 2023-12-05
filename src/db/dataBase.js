@@ -1,18 +1,14 @@
 import { Sequelize } from 'sequelize';
+const databaseURL = process.env.MYSQL_URL || "demeterfinal";
 
-// Verificar si la variable de entorno RAILWAY_DATABASE_URL está presente
-const railwayDatabaseURL = process.env.RAILWAY_DATABASE_URL;
-
-// Configuración predeterminada si RAILWAY_DATABASE_URL no está presente
-const localDatabaseConfig = {
-  database: 'demeterfinal',
-  username: 'root',
-  password: '',
-  host: 'localhost',
-  dialect: 'mysql'
+const config = {
+  username: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD || "",
+  database: process.env.MYSQLDATABASE,
+  host: process.env.MYSQLHOST,
+  dialect: 'mysql', // Asegúrate de especificar el dialecto aquí
 };
 
-// Utilizar la configuración de Railway si está presente, de lo contrario, utilizar la configuración local
-const databaseConfig = railwayDatabaseURL ? { url: railwayDatabaseURL } : localDatabaseConfig;
-
-export const sequelize = new Sequelize(databaseConfig);
+export const sequelize = new Sequelize(
+  config
+);
