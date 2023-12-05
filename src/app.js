@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import bodyParse  from "body-parser"
 
 import category_suppliesRoutes from './routes/suppliescategory.routes.js';
 import category_productsRoutes from './routes/productcategory.routes.js'
@@ -18,11 +19,11 @@ import productRoutes from './routes/product.routes.js';
 
 const app = express();
 
-app.use(cors({
-}));
+app.use(cors());
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(bodyParse.urlencoded({extended: true}))
 app.use(cookieParser());
 
 app.use(supplierRoutes)
