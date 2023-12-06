@@ -20,20 +20,12 @@ import productRoutes from './routes/product.routes.js';
 const app = express();
 
 const corsOptions = {
-    origin: (origin, callback) => {
-      // Permitir cualquier origen cuando las credenciales están incluidas
-      if (!origin || origin === 'http://localhost:5173') {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: '*', // Ajusta esto según tus necesidades
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+    //credentials: true, // Habilitar el intercambio de cookies (si es necesario)
     optionsSuccessStatus: 204,
   };
-  
-  app.use(cors(corsOptions));
+
 app.use(cors(corsOptions));
 
 app.use(morgan('dev'));
