@@ -20,14 +20,20 @@ import productRoutes from './routes/product.routes.js';
 const app = express();
 
 const corsOptions = {
-    origin: function (origin, callback) {
-        
+    origin: (origin, callback) => {
+      // Permitir cualquier origen cuando las credenciales están incluidas
+      if (!origin || origin === 'http://localhost:5173') {
         callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Habilitar el intercambio de cookies
+    credentials: true,
     optionsSuccessStatus: 204,
-};
+  };
+  
+  app.use(cors(corsOptions));
 app.use(cors(corsOptions));
 
 app.use(morgan('dev'));
