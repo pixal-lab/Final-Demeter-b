@@ -31,7 +31,8 @@ export const createSale = async(req, res) => {
         
         Total: Total,
         SubTotal : SubTotal,
-        User_ID : User_ID
+        User_ID : User_ID,
+        Payment : "Vacio"
        
     })
 
@@ -66,7 +67,7 @@ export const updateSale = async (req, res) => {
 }
 export const pay = async (req, res) => {
     try {
-        const {ID_Sale} = req.body
+        const {ID_Sale, Payment} = req.body
         
         const existingSale = await sale.findByPk(ID_Sale);
 
@@ -75,7 +76,8 @@ export const pay = async (req, res) => {
         }
 
         existingSale.StatePay = false;
-       
+        existingSale.Payment = Payment;
+        
         await existingSale.save();
 
         res.json(existingSale);
@@ -103,3 +105,51 @@ export const deleteSale = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+
+export const getSaleUp = async (req, res) => {
+    try {
+        const Sales = await sale.findAll({
+            where: {
+                StatePay: true
+            }
+        });
+
+        res.json(Sales);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getSaleDown = async (req, res) => {
+
+    try {
+        const Sales = await sale.findAll({
+            where: {
+                StatePay: false
+            }
+        });
+
+        res.json(Sales);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getSalesByTimeRange = async (req, res) => {
+    try {
+        const { startTime, endTime } = req.query; 
+
+        const sales = await sale.findAll({
+            where: {
+                createdAt: {
+                    [Op.between]: [startTime, endTime],
+                },
+                StatePay: 0,
+            },
+        });
+
+        res.json(sales);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};

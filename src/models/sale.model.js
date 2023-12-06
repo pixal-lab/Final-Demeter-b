@@ -89,7 +89,7 @@ export const sale = sequelize.define('Sales', {
         }
     }
 }, {
-    timestamps: false
+    timestamps: true
 });
 
 sale.hasMany(saleDetail, {
