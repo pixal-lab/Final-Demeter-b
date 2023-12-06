@@ -1,4 +1,5 @@
 import { saleDetail } from '../models/saledetail.model.js';
+import { product } from '../models/product.model.js';
 import { Op } from 'sequelize';
 
 export const createSaleDetail = async (req, res) => {
