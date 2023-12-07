@@ -22,9 +22,9 @@ const app = express();
 const corsOptions = {
     origin: 'http://localhost:5173', // Ajusta esto según tus necesidades
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    //credentials: true, // Habilitar el intercambio de cookies (si es necesario)
+    credentials: true, // Habilitar el intercambio de cookies (si es necesario)
     optionsSuccessStatus: 204,
-  };
+  }; 
 
 app.use(cors(corsOptions));
 
