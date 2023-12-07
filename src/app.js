@@ -20,7 +20,7 @@ import productRoutes from './routes/product.routes.js';
 const app = express();
 
 const corsOptions = {
-    origin: 'https://demeter-final-back-production.up.railway.app', // Ajusta esto según tus necesidades
+    origin: '*', // Ajusta esto según tus necesidades
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     //credentials: true, // Habilitar el intercambio de cookies (si es necesario)
     optionsSuccessStatus: 204,
