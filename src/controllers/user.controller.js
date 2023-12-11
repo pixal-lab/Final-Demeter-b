@@ -35,6 +35,22 @@ export const getUser = async (req, res) => {
     }
 };
 
+export const getCurrentUser = async (req, res) => {
+
+    const token = req.cookies.token
+    console.log(token)
+    const user = jwt.decode(token, TOKEN_SECRET)
+    console.log("user")
+    console.log(user)
+
+    req.params = {
+        ...req.params,
+        id: user?.id || user.ID_User
+    }
+
+    return getUser(req, res)
+}
+
 export const checkForDuplicates = async (req, res, next) => {
     try {
         const { Document, Email } = req.body;
@@ -110,6 +126,7 @@ export const updateUser = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
 export const editProfile = async (req, res) => {
     const { id } = req.params
 
@@ -151,7 +168,7 @@ export const changePassword = async (req, res) => {
 
         await updateUser.save();
 
-
+        
         const token = await createAccessToken({ ID_User: userFound.ID_User });
         res.cookie('token', token);
 
@@ -160,7 +177,6 @@ export const changePassword = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
 
 export const toggleUserStatus = async (req, res) => {
     const { id } = req.params;
