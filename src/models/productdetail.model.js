@@ -24,7 +24,7 @@ export const productDetail = sequelize.define('ProductDetails', {
 
     Measure: {
         type: DataTypes.STRING(15),
-        allowNull: true
+        allowNull: true 
         
     },
 

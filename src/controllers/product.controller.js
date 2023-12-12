@@ -166,7 +166,7 @@ export const getDetailProduct = async (req, res) => {
                 },
                 {
                     model: supplies,
-                    attributes: ['ID_Supplies', 'Name_Supplies', 'Measure'  ], // Agrega los campos necesarios
+                    attributes: ['ID_Supplies', 'Name_Supplies', 'measure'  ], // Agrega los campos necesarios
                 },
             ],
         });
@@ -211,6 +211,39 @@ export const deleteDetailProduct = async (req, res) => {
         await productDetail.destroy({
             where: { ID_ProductDetail: id, }
         });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+export const getDetailProduct2 = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const productDetails = await productDetail.findAll({
+            attributes: ['Lot_ProductDetail', 'Supplies_ID', 'Product_ID'],
+            where: { Product_ID: id },
+        });
+
+        if (!productDetails || productDetails.length === 0) {
+            return res.status(404).json({ message: 'No existen detalles para el producto.' });
+        }
+
+        for (const detail of productDetails) {
+            const suppliesID = detail.Supplies_ID;
+            const lot = detail.Lot_ProductDetail;
+
+            const supply = await supplies.findByPk(suppliesID);
+
+            if (!supply) {
+                return res.status(404).json({ message: 'No se encontró el suministro asociado al detalle del producto.' });
+            }
+
+            const newUnit = supply.Unit - (lot/2);
+
+            await supply.update({ Unit: newUnit });
+        }
+
+        res.json(productDetails);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

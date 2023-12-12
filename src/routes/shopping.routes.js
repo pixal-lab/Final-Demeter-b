@@ -1,10 +1,14 @@
 import { Router } from 'express';
-import { getShopping, getShop, createShopping, disableShop, createMultipleShopping, getShopingAndShopingDetails, getShopingByProvider, getShoppingAndSuppliesBySupplierId, getShoppingAndSuppliesBySupplierIdAndDate, getShoppingAndSuppliesBySupplierIdAndDateTime } from '../controllers/shopping.controller.js'
+import { getShopping, getShop, createShopping, disableShop, createMultipleShopping, getShopingAndShopingDetails ,getShoppingByDate, getShopingByProvider, getShoppingAndSuppliesBySupplierId, getShoppingAndSuppliesBySupplierIdAndDate, getShoppingAndSuppliesBySupplierIdAndDateTime } from '../controllers/shopping.controller.js'
+import { getMostExpensiveSupply} from '../controllers/shoppingdetail.controller.js'
+
 
 const router = Router();
 
 router.get('/shopping', getShopping);
 router.get('/shopping/:id', getShop);
+router.get('/shoppingByDate', getShoppingByDate);
+router.get('/shoppingdetailExp', getMostExpensiveSupply);
 router.post('/shopping', createShopping);
 router.post('/multpleShopping', createMultipleShopping);
 router.get('/getShopingByProvider', getShopingByProvider);

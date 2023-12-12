@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProducts,getAllProduct,getProduct, getProductsByCategory, checkForDuplicates, createProduct, updateProduct, toggleProductStatus, deleteProduct } from '../controllers/product.controller.js';
+import { getProducts,getAllProduct,getProduct, getProductsByCategory,getDetailProduct2,checkForDuplicates, createProduct, updateProduct, toggleProductStatus, deleteProduct } from '../controllers/product.controller.js';
 import { getDetailProduct, createDetailP, deleteDetailProduct } from '../controllers/product.controller.js'; //Detalles
 import { authRequired } from '../middlewares/validateToken.js'
 
@@ -18,5 +18,6 @@ router.get('/AllProducts', getAllProduct);
 router.get('/product_detail/:id', getDetailProduct)
 router.post('/add_details', createDetailP)
 router.delete('/details/:id', deleteDetailProduct)
+router.get('/product_detail2/:id', getDetailProduct2)
 
 export default router;
