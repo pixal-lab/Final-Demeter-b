@@ -16,7 +16,7 @@ router.get('/AllProducts', getAllProduct);
 
 //Detalles
 router.get('/product_detail/:id', getDetailProduct)
-router.post('/add_details/:id', createDetailP)
+router.post('/add_details', createDetailP)
 router.delete('/details/:id', deleteDetailProduct)
 
 export default router;

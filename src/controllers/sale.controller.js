@@ -1,5 +1,7 @@
 import { sale } from '../models/sale.model.js';
 import { Op } from 'sequelize';
+import { user } from '../models/user.model.js';
+import { sequelize } from '../db/dataBase.js';
 
 export const getSale = async (req, res) => {
     try {
@@ -149,6 +151,61 @@ export const getSalesByTimeRange = async (req, res) => {
         });
 
         res.json(sales);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const getSalesByDate = async (req, res) => {
+    try {
+        const salesByDate = await sale.findAll({
+            attributes: [
+                [sequelize.fn('DATE', sequelize.col('createdAt')), 'saleDate'], // Extraer solo la parte de la fecha
+                [sequelize.fn('COUNT', sequelize.col('*')), 'totalSales'], // Contar el número de ventas
+                [sequelize.fn('SUM', sequelize.col('Total')), 'totalAmount'], // Sumar el monto total de ventas
+            ],
+            where: {
+                createdAt: {
+                    [Op.gte]: new Date(new Date() - 30 * 24 * 60 * 60 * 1000), // Filtrar ventas de los últimos 30 días
+                },
+                Payment: {
+                    [Op.ne]: 'Vacio', // Excluir ventas con Payment igual a 'Vacio'
+                },
+            },
+            group: [sequelize.fn('DATE', sequelize.col('createdAt'))],
+            raw: true, // Obtener resultados sin formato de modelo Sequelize
+        });
+
+        res.json(salesByDate);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getSalesByUser = async (req, res) => {
+    try {
+        const salesByUser = await sale.findAll({
+            attributes: [
+                [sequelize.fn('SUM', sequelize.col('Total')), 'totalAmount'], // Sumar el monto total de ventas
+                [sequelize.literal('User.Name_User'), 'userName'], // Alias para el atributo 'Name_User'
+            ],
+            include: [
+                {
+                    model: user,
+                    attributes: [], // No seleccionamos el 'Name_User' aquí ya que lo estamos obteniendo con un alias
+                },
+            ],
+            where: {
+                Payment: {
+                    [Op.ne]: 'Vacio', // Excluir ventas con Payment igual a 'Vacio'
+                },
+            },
+            group: ['User_ID'], // Agrupar por User_ID
+            raw: true, // Obtener resultados sin formato de modelo Sequelize
+        });
+
+        res.json(salesByUser);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

@@ -3,6 +3,7 @@ import { sequelize } from "../db/dataBase.js";
 import { shopping } from './shopping.model.js'
 import { sale } from './sale.model.js'
 
+
 export const user = sequelize.define('Users', {
 
     ID_User: {

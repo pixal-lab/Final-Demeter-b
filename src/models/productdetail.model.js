@@ -24,17 +24,8 @@ export const productDetail = sequelize.define('ProductDetails', {
 
     Measure: {
         type: DataTypes.STRING(15),
-        allowNull: false, 
-        validate: {
-            notNull:{
-                msg: "La medida del insumo es requerido"
-            }, 
-            customValidate(value) {
-                if (!/^[A-Za-z\s()]+$/.test(value)) {
-                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
-                }
-            }
-        },
+        allowNull: true
+        
     },
 
     State: {
