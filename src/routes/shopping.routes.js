@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getShopping, getShop, createShopping, disableShop, createMultipleShopping, getShopingAndShopingDetails ,getShoppingByDate, getShopingByProvider, getShoppingAndSuppliesBySupplierId, getShoppingAndSuppliesBySupplierIdAndDate, getShoppingAndSuppliesBySupplierIdAndDateTime } from '../controllers/shopping.controller.js'
+import { getShopping, getShop, createShopping, disableShop, createMultipleShopping, getShopingAndShopingDetails ,getShoppingByDate, getShopingByProvider, getShoppingAndSuppliesBySupplierId, getShoppingAndSuppliesBySupplierIdAndDate, getShoppingAndSuppliesBySupplierIdAndDateTime } from '../controllers/shopping.controler.js'
 import { getMostExpensiveSupply} from '../controllers/shoppingdetail.controller.js'
 
 
