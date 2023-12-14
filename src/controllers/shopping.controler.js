@@ -150,10 +150,9 @@ export const getShopingByProvider = async (req, res) => {
                 // También puedes agregar otras funciones de agregación según tus necesidades
             ],
             include: [{
-                model: supplier,
+                model: supplier,    
                 required: true
             }],
-            group: ['Datetime']
         });
 
         res.json(shoppingBySupplier);
