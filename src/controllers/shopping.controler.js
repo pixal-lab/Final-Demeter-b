@@ -141,20 +141,24 @@ export const getShoppingAndSuppliesBySupplierIdAndDate = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
 export const getShopingByProvider = async (req, res) => {
     try {
-
         const shoppingBySupplier = await shopping.findAll({
+            attributes: [
+                'Datetime', // Agrega otras columnas si es necesario
+                [sequelize.fn('COUNT', sequelize.col('Shoppings.ID_Shopping')), 'ShoppingCount']
+                // También puedes agregar otras funciones de agregación según tus necesidades
+            ],
             include: [{
                 model: supplier,
                 required: true
             }],
-            group: "Datetime"
-        })
+            group: ['Datetime']
+        });
 
         res.json(shoppingBySupplier);
     } catch (error) {
+        console.error(error);
         return res.status(500).json({ message: error.message });
     }
 };
