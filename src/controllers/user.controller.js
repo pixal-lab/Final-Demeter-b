@@ -12,7 +12,7 @@ export const getUsers = async (req, res) => {
                 TypeUser_ID: 1
             }
         });
-        res.json(users);
+        return res.json(users);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -26,7 +26,7 @@ export const getUser = async (req, res) => {
 
         if (!getUser) return res.status(404).json({ message: 'El usuario no existe' })
 
-        res.json(getUser);
+        return res.json(getUser);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
