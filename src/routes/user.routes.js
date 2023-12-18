@@ -17,31 +17,31 @@ const router = Router();
 //     }
 // )
 
-// router.get('/user', authRequired, moduleValidation.hasPermissions(
+// router.get('/user', moduleValidation.hasPermissions(
 //     moduleValidation.MODULES.USER
 // ), getUsers);
-// router.get('/user/:id', authRequired, moduleValidation.hasPermissions(
+// router.get('/user/:id', moduleValidation.hasPermissions(
 //     moduleValidation.MODULES.USER
 // ), getUser);
-// router.post('/add_user', authRequired, moduleValidation.hasPermissions(
+// router.post('/add_user', moduleValidation.hasPermissions(
 //     moduleValidation.MODULES.USER
 // ), checkForDuplicates, createUser);
-// router.put('/user/:id', authRequired, moduleValidation.hasPermissions(
+// router.put('/user/:id', moduleValidation.hasPermissions(
 //     moduleValidation.MODULES.USER
 // ), updateUser);
-// router.put("/user/toggle/:id", authRequired, moduleValidation.hasPermissions(
+// router.put("/user/toggle/:id", moduleValidation.hasPermissions(
 //     moduleValidation.MODULES.USER
 // ), toggleUserStatus);
-// router.delete('/user/:id', authRequired, moduleValidation.hasPermissions(
+// router.delete('/user/:id', moduleValidation.hasPermissions(
 //     moduleValidation.MODULES.USER
 // ), deleteUser);
 router.get('/existUserByEmailOrId/:email/:document/:userType(supplier|user)', existUserByEmailOrId);
 
-router.get('/user', authRequired, getUsers);
-router.get('/user/:id', authRequired, getUser);
+router.get('/user', getUsers);
+router.get('/user/:id', getUser);
 router.post('/add_user', checkForDuplicates, createUser);
-router.put('/user/:id', authRequired, updateUser);
-router.put("/user/toggle/:id", authRequired, toggleUserStatus);
-router.delete('/user/:id', authRequired, deleteUser);
+router.put('/user/:id', updateUser);
+router.put("/user/toggle/:id", toggleUserStatus);
+router.delete('/user/:id', deleteUser);
 
 export default router;
