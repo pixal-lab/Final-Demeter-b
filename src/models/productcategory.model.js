@@ -2,26 +2,29 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
 import { product } from './product.model.js'
 
-export const productCategory =  sequelize.define('ProductCategorys', {
+export const productCategory = sequelize.define('ProductCategorys', {
 
     ID_ProductCategory: {
         type: DataTypes.INTEGER,
-        primaryKey: true, 
-        autoIncrement: true 
-    }, 
+        primaryKey: true,
+        autoIncrement: true
+    },
 
     Name_ProductCategory: {
-        type: DataTypes.STRING(30), 
-        allowNull: false, 
-        validate:{
-            notNull:{
-                msg: "El nombre es requerido"
-            }, 
+        type: DataTypes.STRING(30),
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "El nombre de la categoría de producto es requerido"
+            },
             customValidate(value) {
-                
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]*$/.test(value)) {
+                    throw new Error('Se permiten letras mayúsculas, minúsculas, espacios, tildes.');
                 }
+            },  
+            len: {
+                args: [3, 30],
+                msg: 'El nombre de la categoría de producto debe tener de 3 a 30 caracteres.'
             }
         }
     },
@@ -41,11 +44,16 @@ export const productCategory =  sequelize.define('ProductCategorys', {
 });
 
 productCategory.hasMany(product, {
-    foreignKey: 'ProductCategory_ID',
+    foreignKey: {
+        name: 'ProductCategory_ID',
+        allowNull: false,
+    },
     sourceKey: 'ID_ProductCategory'
 })
-
 product.belongsTo(productCategory, {
-    foreignKey: 'ProductCategory_ID',
+    foreignKey: {
+        name: 'ProductCategory_ID',
+        allowNull: false,
+    },
     targetKey: 'ID_ProductCategory'
 })

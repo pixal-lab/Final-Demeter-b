@@ -7,7 +7,12 @@ export const shopping = sequelize.define('Shoppings', {
     ID_Shopping: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
+    },
+
+    Invoice_Number: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
 
     Datetime: {
@@ -15,7 +20,7 @@ export const shopping = sequelize.define('Shoppings', {
         allowNull: false,
         validate: {
             notNull: {
-                msg: "La fech de la compra es requerido"
+                msg: "La fecha de la compra es requerido"
             }
         }
     },
@@ -27,7 +32,7 @@ export const shopping = sequelize.define('Shoppings', {
             notNull: {
                 msg: "El total de la compra es requerido"
             },
-            isInt: true
+            isFloat: true
         }
     },
 
@@ -40,22 +45,22 @@ export const shopping = sequelize.define('Shoppings', {
                 msg: 'El estado es requerido'
             }
         }
-    },
-
-    Invoice_Number: {
-        type: DataTypes.STRING,
-        allowNull: true
     }
 }, {
     timestamps: false
 });
 
 shopping.hasMany(shoppingDetail, {
-    foreignKey: 'Shopping_ID',
+    foreignKey: {
+        name: 'Shopping_ID',
+        allowNull: false,
+    },
     sourceKey: 'ID_Shopping'
 })
-
 shoppingDetail.belongsTo(shopping, {
-    foreignKey: 'Shopping_ID',
+    foreignKey: {
+        name: 'Shopping_ID',
+        allowNull: false,
+    },
     targetKey: 'ID_Shopping'
 })

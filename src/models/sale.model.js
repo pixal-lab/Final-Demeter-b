@@ -62,20 +62,13 @@ export const sale = sequelize.define('Sales', {
             notNull:{
                 msg: "El precio del producto es requerido"
             }, 
-            isInt: true
+            isFloat: true
         }
     },
 
     Payment: {
         type: DataTypes.STRING(30),
-        allowNull: true, 
-        validate: {
-            customValidate(value) {
-                if (!/^[A-Za-z\s()]+$/.test(value)) {
-                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
-                }
-            }
-        },
+        allowNull: true
     },
 
     State: {
@@ -93,11 +86,16 @@ export const sale = sequelize.define('Sales', {
 });
 
 sale.hasMany(saleDetail, {
-    foreignKey: 'Sale_ID',
+    foreignKey: {
+        name: 'Sale_ID',
+        allowNull: false,
+    },
     sourceKey: 'ID_Sale',
 })
-
 saleDetail.belongsTo(sale, {
-    foreignKey: 'Sale_ID',
+    foreignKey: {
+        name: 'Sale_ID',
+        allowNull: false,
+    },
     targetKey: 'ID_Sale',
 })

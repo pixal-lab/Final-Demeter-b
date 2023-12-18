@@ -128,7 +128,9 @@ export const updateUnitSupplieById = async (id, quantity) => {
         const currentQuantity = parseFloat(supply.Unit);
         const newQuantity = parseFloat(quantity);
 
+        // Verificar si las conversiones son válidas
         if (!isNaN(currentQuantity) && !isNaN(newQuantity)) {
+            // Realizar la suma y actualizar la cantidad del insumo
             const updatedQuantity = currentQuantity + newQuantity;
             const updatedSupply = await supply.update({ Unit: updatedQuantity });
 

@@ -1,4 +1,4 @@
-    const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 // Configuración del transportador (nodemailer)
 const transporter = nodemailer.createTransport({

@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/dataBase.js";
-import { permissionModule } from './permissionModule.model.js'
+import { modulePermission } from "./modulePermission.model.js";
 
 export const module = sequelize.define('Modules', {
 
@@ -11,31 +11,39 @@ export const module = sequelize.define('Modules', {
     },
 
     Name_Module: {
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING(20),
         allowNull: false,
         validate: {
             notNull: {
                 msg: "El nombre es requerido"
             },
             customValidate(value) {
-
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('Se debe comenzar con mayúscula y puede contener letras y espacios.');
+                if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]*$/.test(value)) {
+                    throw new Error('Se permiten letras mayúsculas, minúsculas, espacios, tildes.');
                 }
+            },
+            len: {
+                args: [3, 20],
+                msg: 'El nombre del modulo debe tener de 3 a 20 caracteres.'
             }
         }
-    },
+    }
 
 }, {
     timestamps: false
 });
 
-module.hasMany(permissionModule, {
-    foreignKey: 'Module_ID',
+module.hasMany(modulePermission, {
+    foreignKey: {
+        name: 'Module_ID',
+        allowNull: false,
+    },
     sourceKey: 'ID_Module'
 })
-
-permissionModule.belongsTo(module, {
-    foreignKey: 'Module_ID',
+modulePermission.belongsTo(module, {
+    foreignKey: {
+        name: 'Module_ID',
+        allowNull: false,
+    },
     targetKey: 'ID_Module'
 })

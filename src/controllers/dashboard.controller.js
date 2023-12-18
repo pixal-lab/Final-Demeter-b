@@ -1,4 +1,3 @@
-import { sequelize } from '../db/dataBase.js';
 import { Op } from 'sequelize';
 import { sale } from '../models/sale.model.js';
 import { saleDetail } from '../models/saledetail.model.js';
@@ -6,312 +5,126 @@ import { product } from '../models/product.model.js';
 import { shopping } from '../models/shopping.model.js';
 import { shoppingDetail } from '../models/shoppingdetail.model.js';
 import { supplies } from '../models/supplies.model.js';
+import { sequelize } from '../db/dataBase.js';
 
-
-export const mostPurchasedSupplies = async (req, res) => {
+export const getSalesByDate = async (req, res) => {
     try {
-        const mostPurchased = await supplies.findAll({
+        const salesByDate = await sale.findAll({
+            attributes: [
+                [sequelize.fn('DATE', sequelize.col('createdAt')), 'saleDate'], // Extraer solo la parte de la fecha
+                [sequelize.fn('COUNT', sequelize.col('*')), 'totalSales'], // Contar el número de ventas
+                [sequelize.fn('SUM', sequelize.col('Total')), 'totalAmount'], // Sumar el monto total de ventas
+            ],
+            where: {
+                createdAt: {
+                    [Op.gte]: new Date(new Date() - 30 * 24 * 60 * 60 * 1000), // Filtrar ventas de los últimos 30 días
+                },
+                Payment: {
+                    [Op.ne]: 'Vacio', // Excluir ventas con Payment igual a 'Vacio'
+                },
+            },
+            group: [sequelize.fn('DATE', sequelize.col('createdAt'))],
+            raw: true, // Obtener resultados sin formato de modelo Sequelize
+        });
+
+        res.json(salesByDate);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getShoppingByDate = async (req, res) => {
+    try {
+        const shoppingByDate = await shopping.findAll({
+            attributes: [
+                [sequelize.fn('DATE', sequelize.col('Datetime')), 'shoppingDate'],
+                [sequelize.fn('COUNT', sequelize.col('*')), 'totalShopping'],
+                [sequelize.fn('SUM', sequelize.col('Total')), 'totalAmount'],
+            ],
+            group: [sequelize.fn('DATE', sequelize.col('Datetime'))],
+            raw: true,
+        });
+
+        res.json(shoppingByDate);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getSalesByUser = async (req, res) => {
+    try {
+        const salesByUser = await sale.findAll({
+            attributes: [
+                [sequelize.fn('SUM', sequelize.col('Total')), 'totalAmount'], // Sumar el monto total de ventas
+                [sequelize.literal('User.Name_User'), 'userName'], // Alias para el atributo 'Name_User'
+            ],
             include: [
                 {
-                    model: shoppingDetail,
-                    attributes: ['Supplies_ID', [sequelize.fn('sum', sequelize.col('Lot')), 'totalLot']],
-                    group: ['Supplies_ID'],
-                    order: [[sequelize.literal('totalLot'), 'DESC']],
-                    limit: 5, // Obtener los 5 más comprados
+                    model: user,
+                    attributes: [], // No seleccionamos el 'Name_User' aquí ya que lo estamos obteniendo con un alias
                 },
             ],
+            where: {
+                Payment: {
+                    [Op.ne]: 'Vacio', // Excluir ventas con Payment igual a 'Vacio'
+                },
+            },
+            group: ['User_ID'], // Agrupar por User_ID
+            raw: true, // Obtener resultados sin formato de modelo Sequelize
         });
 
-        res.json(mostPurchased);
+        res.json(salesByUser);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
-export const mostSoldProducts = async (req, res) => {
+export const countAllDetailsByProduct = async (req, res) => {
     try {
-        const mostSold = await product.findAll({
+        const mostSoldProduct = await saleDetail.findAll({
+            attributes: [
+                [sequelize.literal('product.Name_Products'), 'ProductName'],
+                [sequelize.fn('COUNT', sequelize.col('Product_ID')), 'detailCount'],
+            ],
             include: [
                 {
-                    model: saleDetail,
-                    attributes: ['Product_ID', [sequelize.fn('sum', sequelize.col('Lot')), 'totalLot']],
-                    group: ['Product_ID'],
-                    order: [[sequelize.literal('totalLot'), 'DESC']],
-                    limit: 5, // Obtener los 5 más vendidos
+                    model: product,
+                    attributes: [],
                 },
-            ],
-        });
-
-        res.json(mostSold);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const totalProfitAndExpenses = async (req, res) => {
-    try {
-        const totalProfit = await sale.sum('Total', {
-            where: { StatePay: true },
-        });
-
-        const totalExpenses = await shopping.sum('Total', {
-            where: { State: true },
-        });
-
-        res.json({ totalProfit, totalExpenses });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const organizeByDay = async (req, res) => {
-    try {
-        const salesByDay = await sale.findAll({
-            attributes: [
-                [
-                    sequelize.fn(
-                        'date_trunc',
-                        'day',
-                        sequelize.fn('now') // Utiliza la fecha y hora actual
-                    ),
-                    'day',
-                ],
-                [sequelize.fn('sum', sequelize.col('Total')), 'totalSales'],
-            ],
-            where: {
-                Datetime: {
-                    [Op.gte]: sequelize.fn('date_trunc', 'day', sequelize.fn('now')),
-                },
-            },
-        });
-
-        const expensesByDay = await shopping.findAll({
-            attributes: [
-                [
-                    sequelize.fn(
-                        'date_trunc',
-                        'day',
-                        sequelize.fn('now') // Utiliza la fecha y hora actual
-                    ),
-                    'day',
-                ],
-                [sequelize.fn('sum', sequelize.col('Total')), 'totalExpenses'],
-            ],
-            where: {
-                Datetime: {
-                    [Op.gte]: sequelize.fn('date_trunc', 'day', sequelize.fn('now')),
-                },
-            },
-        });
-
-        res.json({ salesByDay, expensesByDay });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const organizeByWeek = async (req, res) => {
-    try {
-        const salesByWeek = await sale.findAll({
-            attributes: [
-                [
-                    sequelize.fn(
-                        'date_trunc',
-                        'week',
-                        sequelize.fn('now') // Utiliza la fecha y hora actual
-                    ),
-                    'week',
-                ],
-                [sequelize.fn('sum', sequelize.col('Total')), 'totalSales'],
-            ],
-            where: {
-                Datetime: {
-                    [Op.gte]: sequelize.fn('date_trunc', 'week', sequelize.fn('now')),
-                },
-            },
-        });
-
-        const expensesByWeek = await shopping.findAll({
-            attributes: [
-                [
-                    sequelize.fn(
-                        'date_trunc',
-                        'week',
-                        sequelize.fn('now') // Utiliza la fecha y hora actual
-                    ),
-                    'week',
-                ],
-                [sequelize.fn('sum', sequelize.col('Total')), 'totalExpenses'],
-            ],
-            where: {
-                Datetime: {
-                    [Op.gte]: sequelize.fn('date_trunc', 'week', sequelize.fn('now')),
-                },
-            },
-        });
-
-        res.json({ salesByWeek, expensesByWeek });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const organizeByMonth = async (req, res) => {
-    try {
-        const salesByMonth = await sale.findAll({
-            attributes: [
-                [
-                    sequelize.fn(
-                        'date_trunc',
-                        'month',
-                        sequelize.fn('now') // Utiliza la fecha y hora actual
-                    ),
-                    'month',
-                ],
-                [sequelize.fn('sum', sequelize.col('Total')), 'totalSales'],
-            ],
-            where: {
-                Datetime: {
-                    [Op.gte]: sequelize.fn('date_trunc', 'month', sequelize.fn('now')),
-                },
-            },
-        });
-
-        const expensesByMonth = await shopping.findAll({
-            attributes: [
-                [
-                    sequelize.fn(
-                        'date_trunc',
-                        'month',
-                        sequelize.fn('now') // Utiliza la fecha y hora actual
-                    ),
-                    'month',
-                ],
-                [sequelize.fn('sum', sequelize.col('Total')), 'totalExpenses'],
-            ],
-            where: {
-                Datetime: {
-                    [Op.gte]: sequelize.fn('date_trunc', 'month', sequelize.fn('now')),
-                },
-            },
-        });
-
-        res.json({ salesByMonth, expensesByMonth });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const totalProfitAndExpensesByPaymentMethod = async (req, res) => {
-    try {
-        const paymentMethods = await sale.findAll({
-            attributes: ['Payment', [sequelize.fn('count', sequelize.col('Payment')), 'usageCount']],
-            group: ['Payment'],
-        });
-
-        res.json(paymentMethods);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const totalUnitsPurchasedBySupply = async (req, res) => {
-    try {
-        const totalUnitsPurchased = await shoppingDetail.findAll({
-            attributes: [
-                'Supplies_ID',
-                [sequelize.fn('sum', sequelize.col('Lot')), 'totalUnitsPurchased'],
-            ],
-            group: ['Supplies_ID'],
-        });
-
-        res.json(totalUnitsPurchased);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const totalUnitsSoldByProduct = async (req, res) => {
-    try {
-        const totalUnitsSold = await saleDetail.findAll({
-            attributes: [
-                'Product_ID',
-                [sequelize.fn('sum', sequelize.col('Lot')), 'totalUnitsSold'],
             ],
             group: ['Product_ID'],
+            order: [[sequelize.literal('detailCount'), 'DESC']],
+            limit: 1,
+            raw: true,
         });
 
-        res.json(totalUnitsSold);
+        res.json(mostSoldProduct[0]); // Devuelve el primer elemento del array (el único resultado debido al límite)
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
-export const averageUnitsPerPurchase = async (req, res) => {
+export const getMostExpensiveSupply = async (req, res) => {
     try {
-        const averageUnits = await shoppingDetail.findAll({
+        const mostExpensiveSupply = await shoppingDetail.findOne({
             attributes: [
-                [sequelize.fn('avg', sequelize.col('Lot')), 'averageUnitsPerPurchase'],
+                'Supplies_ID',
+                [sequelize.fn('SUM', sequelize.literal('Price_Supplier * Lot')), 'totalSpent'],
+                [sequelize.literal('Supply.Name_Supplies'), 'userName'],
             ],
-        });
+            group: ['Supplies_ID'],
+            order: [[sequelize.literal('totalSpent'), 'DESC']],
 
-        res.json(averageUnits);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const averageUnitsPerSale = async (req, res) => {
-    try {
-        const averageUnits = await saleDetail.findAll({
-            attributes: [
-                [sequelize.fn('avg', sequelize.col('Lot')), 'averageUnitsPerSale'],
-            ],
-        });
-
-        res.json(averageUnits);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const netIncomeByProduct = async (req, res) => {
-    try {
-        const netIncome = await product.findAll({
             include: [
                 {
-                    model: saleDetail,
-                    attributes: [
-                        'Product_ID',
-                        [sequelize.literal('(SUM(Lot) * Product.Price) - SUM(Lot * Supplies.Price)'), 'netIncome'],
-                    ],
-                    group: ['Product_ID'],
+                    model: supplies,
+                    attributes: ['Name_Supplies'], // Agrega los campos que deseas obtener del modelo de supplies
                 },
             ],
+            raw: true,
         });
 
-        res.json(netIncome);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const netIncomeBySupply = async (req, res) => {
-    try {
-        const netIncome = await supplies.findAll({
-            include: [
-                {
-                    model: shoppingDetail,
-                    attributes: [
-                        'Supplies_ID',
-                        [sequelize.literal('SUM(Lot * Supplies.Price)'), 'netIncome'],
-                    ],
-                    group: ['Supplies_ID'],
-                },
-            ],
-        });
-
-        res.json(netIncome);
+        res.json(mostExpensiveSupply);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

@@ -20,11 +20,10 @@ export const supplies = sequelize.define('Supplies', {
                 msg: "El nombre del insumo es requerido"
             },
             customValidate(value) {
-
-                if (!/^[A-Z][a-zA-Z\s]*$/.test(value)) {
-                    throw new Error('El nombre del insumo debe comenzar con mayúscula y puede contener letras y espacios.');
+                if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]*$/.test(value)) {
+                    throw new Error('Se permiten letras mayúsculas, minúsculas, espacios, tildes.');
                 }
-            },
+            },  
             len: {
                 args: [3, 30],
                 msg: 'El nombre del insumo debe tener de 3 a 30 caracteres.'
@@ -39,7 +38,7 @@ export const supplies = sequelize.define('Supplies', {
             notNull: {
                 msg: "La cantidad del insumo es requerido"
             },
-            isInt: true,
+            isFloat: true,
             min: 0,
             max: 99999999
         },
@@ -51,23 +50,18 @@ export const supplies = sequelize.define('Supplies', {
         validate: {
             notNull: {
                 msg: "La medida del insumo es requerido"
-            },
-            customValidate(value) {
-                if (!/^[A-Za-z\s()]+$/.test(value)) {
-                    throw new Error('La medida del insumo puede contener letras, espacios y paréntesis.');
-                }
             }
-        },
+        }
     },
 
     Stock: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         allowNull: false,
         validate: {
             notNull: {
                 msg: "El stock del insumo es requerido"
             },
-            isInt: true,
+            isFloat: true,
             min: 0,
             max: 9999
         },
@@ -88,31 +82,46 @@ export const supplies = sequelize.define('Supplies', {
 });
 
 supplies.hasMany(productDetail, {
-    foreignKey: 'Supplies_ID',
+    foreignKey: {
+        name: 'Supplies_ID',
+        allowNull: false,
+    },
     sourceKey: 'ID_Supplies'
 })
-
 productDetail.belongsTo(supplies, {
-    foreignKey: 'Supplies_ID',
+    foreignKey: {
+        name: 'Supplies_ID',
+        allowNull: false,
+    },
     targetKey: 'ID_Supplies'
 })
 
 supplies.hasMany(shoppingDetail, {
-    foreignKey: 'Supplies_ID',
+    foreignKey: {
+        name: 'Supplies_ID',
+        allowNull: false,
+    },
     sourceKey: 'ID_Supplies'
 })
-
 shoppingDetail.belongsTo(supplies, {
-    foreignKey: 'Supplies_ID',
+    foreignKey: {
+        name: 'Supplies_ID',
+        allowNull: false,
+    },
     targetKey: 'ID_Supplies'
 })
 
 supplies.hasMany(losses, {
-    foreignKey: 'Supplies_ID',
+    foreignKey: {
+        name: 'Supplies_ID',
+        allowNull: false,
+    },
     sourceKey: 'ID_Supplies'
 })
-
 losses.belongsTo(supplies, {
-    foreignKey: 'Supplies_ID',
+    foreignKey: {
+        name: 'Supplies_ID',
+        allowNull: false,
+    },
     targetKey: 'ID_Supplies'
 })

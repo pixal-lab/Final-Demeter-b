@@ -1,38 +1,47 @@
 import { Router } from "express";
-
-import { getUsers, getUser, checkForDuplicates, createUser, updateUser, toggleUserStatus, deleteUser, login, logout, profile, verifyToken, forgotPassword, NewPassword, getUserCookies } from '../controllers/user.controller.js'; // Empleados
-import { getWaiters, createWaiter, duplicateWaiter, getWaiter, getCurrentUser } from '../controllers/user.controller.js'; // Meseros
-import { editProfile, changePassword } from "../controllers/user.controller.js"; // Usuario logueado
+import { getUsers, getUser, checkForDuplicates, createUser, updateUser, toggleUserStatus, deleteUser, existUserByEmailOrId } from '../controllers/user.controller.js'; // Empleados
 
 import { authRequired } from '../middlewares/validateToken.js'
+import ModuleValidationMiddleware from '../middlewares/ModuleValidation.middleware.js'
 
 const router = Router();
 
-router.get('/user', getUsers);
-router.get('/user/:id', getUser);
-router.get('/getUserCookies', getUserCookies);
-router.get('/getCurrentUser', getCurrentUser);
+// const moduleValidation = new ModuleValidationMiddleware(
+//     ({
+//         res,
+//         error
+//     }) => {
+//         res.json({
+//             message: error.message
+//         })
+//     }
+// )
+
+// router.get('/user', authRequired, moduleValidation.hasPermissions(
+//     moduleValidation.MODULES.USER
+// ), getUsers);
+// router.get('/user/:id', authRequired, moduleValidation.hasPermissions(
+//     moduleValidation.MODULES.USER
+// ), getUser);
+// router.post('/add_user', authRequired, moduleValidation.hasPermissions(
+//     moduleValidation.MODULES.USER
+// ), checkForDuplicates, createUser);
+// router.put('/user/:id', authRequired, moduleValidation.hasPermissions(
+//     moduleValidation.MODULES.USER
+// ), updateUser);
+// router.put("/user/toggle/:id", authRequired, moduleValidation.hasPermissions(
+//     moduleValidation.MODULES.USER
+// ), toggleUserStatus);
+// router.delete('/user/:id', authRequired, moduleValidation.hasPermissions(
+//     moduleValidation.MODULES.USER
+// ), deleteUser);
+router.get('/existUserByEmailOrId/:email/:document/:userType(supplier|user)', existUserByEmailOrId);
+
+router.get('/user', authRequired, getUsers);
+router.get('/user/:id', authRequired, getUser);
 router.post('/add_user', checkForDuplicates, createUser);
-router.put('/user/:id', updateUser);
-router.put("/user/toggle/:id", toggleUserStatus);
-router.delete('/user/:id', deleteUser);
-
-// --------------------------- EditProfile ------------------------------------- //
-router.put('/edit_profile/:id', editProfile);
-router.put('/change_password/:id', changePassword);
-
-// --------------------------- Mesero ------------------------------------- //
-router.get('/waiter', getWaiters);
-router.get('/waiter/:id', getWaiter);
-router.post('/add_waiter', duplicateWaiter, createWaiter);
-
-// --------------------------- Login ------------------------------------- //
-router.post('/login', login);
-router.post('/logout', logout);
-router.get('/profile', authRequired, profile)
-router.get('/verifyToken', verifyToken)
-router.post('/resetPassword', forgotPassword);
-router.post('/newPassword', NewPassword);
-
+router.put('/user/:id', authRequired, updateUser);
+router.put("/user/toggle/:id", authRequired, toggleUserStatus);
+router.delete('/user/:id', authRequired, deleteUser);
 
 export default router;

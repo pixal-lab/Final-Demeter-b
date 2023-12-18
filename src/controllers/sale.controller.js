@@ -13,41 +13,38 @@ export const getSale = async (req, res) => {
 };
 
 export const getOneSale = async (req, res) => {
-    const {ID_Sale} = req.params
+    const { ID_Sale } = req.params
     try {
-        const Sale = await sale.findOne({where: {ID_Sale : ID_Sale}})
+        const Sale = await sale.findOne({ where: { ID_Sale: ID_Sale } })
         res.json(Sale);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
+export const createSale = async (req, res) => {
 
+    const { Total, SubTotal, User_ID } = req.body
 
-export const createSale = async(req, res) => {
-    
-    const{Total, SubTotal, User_ID} = req.body
-    
     try {
-    const newSale = await sale.create({ 
-        
-        Total: Total,
-        SubTotal : SubTotal,
-        User_ID : User_ID,
-        Payment : "Vacio"
-       
-    })
+        const newSale = await sale.create({
 
-    res.json(newSale)
-} catch (error) {
-    return res.status(500).json({ message: error.message });
-}
-}
+            Total: Total,
+            SubTotal: SubTotal,
+            User_ID
+
+        })
+
+        res.json(newSale)
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
 
 export const updateSale = async (req, res) => {
     try {
-        const {ID_Sale, SubTotal, Total} = req.body
-        
+        const { ID_Sale, SubTotal, Total } = req.body
+
         const existingSale = await sale.findByPk(ID_Sale);
 
         if (!existingSale) {
@@ -57,20 +54,19 @@ export const updateSale = async (req, res) => {
         existingSale.SubTotal = SubTotal;
         existingSale.Total = Total;
 
-       
+
         await existingSale.save();
 
         res.json(existingSale);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
+};
 
-    
-}
 export const pay = async (req, res) => {
     try {
-        const {ID_Sale, Payment} = req.body
-        
+        const { ID_Sale } = req.body
+
         const existingSale = await sale.findByPk(ID_Sale);
 
         if (!existingSale) {
@@ -78,16 +74,14 @@ export const pay = async (req, res) => {
         }
 
         existingSale.StatePay = false;
-        existingSale.Payment = Payment;
-        
+
         await existingSale.save();
 
         res.json(existingSale);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-}
-
+};
 
 export const deleteSale = async (req, res) => {
     try {
@@ -106,7 +100,7 @@ export const deleteSale = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-}
+};
 
 export const getSaleUp = async (req, res) => {
     try {
@@ -139,7 +133,7 @@ export const getSaleDown = async (req, res) => {
 
 export const getSalesByTimeRange = async (req, res) => {
     try {
-        const { startTime, endTime } = req.query; 
+        const { startTime, endTime } = req.query;
 
         const sales = await sale.findAll({
             where: {
@@ -151,33 +145,6 @@ export const getSalesByTimeRange = async (req, res) => {
         });
 
         res.json(sales);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-
-export const getSalesByDate = async (req, res) => {
-    try {
-        const salesByDate = await sale.findAll({
-            attributes: [
-                [sequelize.fn('DATE', sequelize.col('createdAt')), 'saleDate'], // Extraer solo la parte de la fecha
-                [sequelize.fn('COUNT', sequelize.col('*')), 'totalSales'], // Contar el número de ventas
-                [sequelize.fn('SUM', sequelize.col('Total')), 'totalAmount'], // Sumar el monto total de ventas
-            ],
-            where: {
-                createdAt: {
-                    [Op.gte]: new Date(new Date() - 30 * 24 * 60 * 60 * 1000), // Filtrar ventas de los últimos 30 días
-                },
-                Payment: {
-                    [Op.ne]: 'Vacio', // Excluir ventas con Payment igual a 'Vacio'
-                },
-            },
-            group: [sequelize.fn('DATE', sequelize.col('createdAt'))],
-            raw: true, // Obtener resultados sin formato de modelo Sequelize
-        });
-
-        res.json(salesByDate);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
