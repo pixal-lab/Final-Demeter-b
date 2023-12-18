@@ -2,11 +2,11 @@ import { Sequelize } from 'sequelize';
 
 
 const dbConfig = {
-  host: process.env.BD_HOST || "roundhouse.proxy.rlwy.net",
-  port: process.env.BD_PORT || "45223",
+  host: process.env.BD_HOST || "localhost",
+  port: process.env.BD_PORT || "3306",
   username: process.env.BD_USER || 'root',
-  password: process.env.BD_PASSWORD || "4A36FFcf3EebF51hC5EEHceCC65f316g",
-  database: process.env.BD_NAME || "railway",
+  password: process.env.BD_PASSWORD || "",
+  database: process.env.BD_NAME || "demeterfinal",
   dialect: 'mysql' 
   
 }
