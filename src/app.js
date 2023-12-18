@@ -23,9 +23,9 @@ import moduleRoutes from './routes/module.routes.js';
 const app = express();
 
 const corsOptions = {
-  origin: "*", // Ajusta esto según tus necesidades
+  origin: /\.railway\.app$/, // Ajusta esto según tus necesidades
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: 'X-Requested-With,content-type,Access-Control-Allow-Origin',
+  allowedHeaders: 'X-Requested-With,content-type',
   credentials: true, // Habilitar el intercambio de cookies (si es necesario)
   optionsSuccessStatus: 204,
 }; 
