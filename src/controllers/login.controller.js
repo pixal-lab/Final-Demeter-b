@@ -54,7 +54,7 @@ export const login = async (req, res) => {
         //     name: userFound.Name_User,
         //     email: userFound.Email,
         // });
-        res.json({
+        return res.json({
             message: "Usuario ingresado correctamente",
             id: 1,
             name: "admin",
