@@ -23,7 +23,7 @@ import moduleRoutes from './routes/module.routes.js';
 const app = express();
 
 const corsOptions = {
-  origin: /\.railway\.app$/, // Ajusta esto según tus necesidades
+  origin: ["final-demeter-b-production.up.railway.app", /\.railway\.app$/], // Ajusta esto según tus necesidades
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // Habilitar el intercambio de cookies (si es necesario)
   optionsSuccessStatus: 204,
