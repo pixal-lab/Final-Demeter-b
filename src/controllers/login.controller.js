@@ -37,39 +37,25 @@ export const getCurrentUser = async (req, res) => {
 export const login = async (req, res) => {
     const { mail, Password } = req.body
     try {
-        
-        // const userFound = await user.findOne({ where: { Email: mail } });
-        // if (!userFound) return res.status(400).json({ message: "Email invalido" });
-        
-        // const isMatch = await bcrypt.compare(Password, userFound.Password)
-        
-        // if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
-        
-        const token = await createAccessToken({ ID_User: 1 });
+
+        const userFound = await user.findOne({ where: { Email: mail } });
+        if (!userFound) return res.status(400).json({ message: "Email invalido" });
+
+        const isMatch = await bcrypt.compare(Password, userFound.Password)
+
+        if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
+
+        const token = await createAccessToken({ ID_User: userFound.ID_User });
         res.cookie('token', token);
 
-        // res.json({
-        //     message: "Usuario ingresado correctamente",
-        //     id: userFound.ID_User,
-        //     name: userFound.Name_User,
-        //     email: userFound.Email,
-        // });
         res.json({
             message: "Usuario ingresado correctamente",
-            id: 1,
-            name: "admin",
-            email: "admin@gmail.com",
+            id: userFound.ID_User,
+            name: userFound.Name_User,
+            email: userFound.Email,
         });
-        return res;
     } catch (error) {
-        res.json({
-            message: "Usuario ingresado correctamente",
-            id: 1,
-            name: "admin",
-            email: "admin@gmail.com",
-        });
-        return res;
-        // res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -95,13 +81,6 @@ export const profile = async (req, res) => {
 };
 
 export const verifyToken = async (req, res) => {
-
-    return res.json({
-        id: 1,
-        username: "admin",
-        email: "admin@gmail.com",
-    });
-
     const { token } = req.cookies
 
     if (!token) return res.status(401).json({ message: 'No autorizado' })
@@ -185,12 +164,11 @@ export const NewPassword = async (req, res) => {
         res.cookie("passwordToken", "").json({
             msg: 'Se actualizó correctamente',
             hasError: false
-        });
-        return res;
+        })
 
 
     } catch (error) {
         console.error('Error:', error);
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message, hasError: true });
     }
 };
