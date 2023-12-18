@@ -199,7 +199,7 @@ export const existUserByEmailOrId = async (req, res) => {
 
 
     } catch (error) {
-        hasError = true
+        hasError = false
     }
 
     res.json({
@@ -207,4 +207,5 @@ export const existUserByEmailOrId = async (req, res) => {
         hasError,
         existingUser
     })
+    return res;
 };

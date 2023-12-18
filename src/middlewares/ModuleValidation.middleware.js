@@ -61,8 +61,7 @@ export default class {
   hasPermissions = (...moduleView) => {
 
     return async (req, res, next) => {
-      next();
-      return;
+
       try {
         this.#res = res
         this.#req = req

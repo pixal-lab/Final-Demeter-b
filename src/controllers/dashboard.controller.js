@@ -28,6 +28,7 @@ export const getSalesByDate = async (req, res) => {
         });
 
         res.json(salesByDate);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -46,6 +47,7 @@ export const getShoppingByDate = async (req, res) => {
         });
 
         res.json(shoppingByDate);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -74,6 +76,7 @@ export const getSalesByUser = async (req, res) => {
         });
 
         res.json(salesByUser);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -99,6 +102,7 @@ export const countAllDetailsByProduct = async (req, res) => {
         });
 
         res.json(mostSoldProduct[0]); // Devuelve el primer elemento del array (el único resultado debido al límite)
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -125,6 +129,7 @@ export const getMostExpensiveSupply = async (req, res) => {
         });
 
         res.json(mostExpensiveSupply);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

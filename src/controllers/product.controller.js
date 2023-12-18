@@ -7,6 +7,7 @@ export const getProducts = async (req, res) => {
     try {
         const products = await product.findAll()
         res.json(products);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -21,6 +22,7 @@ export const getProductById = async (req, res) => {
         })
 
         res.json(_product);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -61,6 +63,7 @@ export const createProduct = async (req, res) => {
         })
 
         res.json(newProduct);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -79,6 +82,7 @@ export const updateProduct = async (req, res) => {
         await updateProduct.save()
 
         res.json(updateProduct);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -111,6 +115,7 @@ export const getProductsByCategory = async (req, res) => {
     try {
         const products = await product.findAll({ where: { ProductCategory_ID: id } })
         res.json(products);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -121,6 +126,7 @@ export const getProduct = async (req, res) => {
         const { id } = req.params
         const products = await product.findOne({ where: { ID_Product: id } })
         res.json(products);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -130,6 +136,7 @@ export const getAllProduct = async (req, res) => {
     try {
         const products = await product.findAll()
         res.json(products);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -163,6 +170,7 @@ export const getDetailsPByProduct = async (req, res) => {
         if (!getDetailsPByProduct) return res.status(404).json({ message: 'No exite el producto.' })
 
         res.json(getProduct, getDetailsPByProduct);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -192,6 +200,7 @@ export const getDetailProduct = async (req, res) => {
         }
 
         res.json(productDetails);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -213,6 +222,7 @@ export const createDetailP = async (req, res) => {
             Lot_ProductDetail: Lot_ProductDetail,
         })
         res.json(createDetail);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

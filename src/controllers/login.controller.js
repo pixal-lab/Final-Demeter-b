@@ -185,7 +185,8 @@ export const NewPassword = async (req, res) => {
         res.cookie("passwordToken", "").json({
             msg: 'Se actualizó correctamente',
             hasError: false
-        })
+        });
+        return res;
 
 
     } catch (error) {

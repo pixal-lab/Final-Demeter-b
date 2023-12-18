@@ -8,6 +8,7 @@ export const getRoles = async (req, res) => {
     try {
         const roles = await role.findAll()
         res.json(roles);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -49,6 +50,7 @@ export const createRoles = async (req, res) => {
         })
 
         res.json(newRole);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -78,6 +80,7 @@ export const updateRole = async (req, res) => {
         await updateRole.save()
 
         res.json(updateRole);
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -199,6 +202,7 @@ export const addModuleToRole = async (req, res) => {
             data: createdModulePermission,
             message: "Modulo agregado correctamente"
         })
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -236,6 +240,7 @@ export const addMultipleModuleAndRole = async (req, res) => {
             data,
             message: "Modulo agregado correctamente"
         })
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -278,6 +283,7 @@ export const addMultipleModuleAndRoleAndDeleteIfExists = async (req, res) => {
             data,
             message: "Modulo agregado correctamente"
         })
+        return res;
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -298,6 +304,7 @@ export const datosType = async (req, res) => {
             message: "Datos insertados correctamente",
             datos: result,
         });
+        return res;
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

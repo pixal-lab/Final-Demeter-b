@@ -5,6 +5,7 @@ export const getLosses = async (req, res) => {
   try {
     const arrayLosses = await losses.findAll();
     res.json(arrayLosses);
+    return res;
   } catch (error) {
     return res.status(500).json({ mensaje: error.message });
   }
@@ -22,6 +23,7 @@ export const getLoss = async (req, res) => {
       return res.status(404).json({ mensaje: 'Pérdida no encontrada' });
     }
     res.json(oneLoss);
+    return res;
   } catch (error) {
     return res.status(500).json({ mensaje: error.message });
   }

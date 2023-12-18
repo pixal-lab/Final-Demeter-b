@@ -5,6 +5,7 @@ export const getModuleNames = async (req, res) => {
   try {
     const modules = await module.findAll()
     res.json(modules);
+    return res;
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -27,6 +28,7 @@ export const getModuleNamesAndRoleState = async (req, res) => {
     console.log("data", data)
 
     res.json(data);
+    return res;
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -50,6 +52,7 @@ export const removeMultipleModulePermissions = async (req, res) => {
     }
 
     res.json(data);
+    return res;
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
