@@ -65,7 +65,7 @@ export default class {
       try {
         this.#res = res
         this.#req = req
-        const moduleNames = Array.from(await this.getAssociatedModulePermissionsByRole())
+        const moduleNames = ["DashBoard", "Configuracion", "Empleados", "Categoria_Insumos", "Insumos", "Proveedores", "Compras", "Categoria_Productos", "Productos", "Meseros", "Ventas"]
         const includes = moduleView.every(m => moduleNames.some(md => md.Module.Name_Module === m))
 
         if (!includes) {
@@ -113,18 +113,7 @@ export default class {
 
 INSERT INTO modules(Name_module)
 VALUES
-("DashBoard"),
-("Configuracion"),
-("Empleados"),
-("Categoria_Insumos"),
-("Insumos"),
-("Proveedores"),
-("Compras"),
-("Categoria_Productos"),
-("Productos"),
-("Meseros"),
-("Ventas");
-
+"DashBoard", "Configuracion", "Empleados", "Categoria_Insumos", "Insumos", "Proveedores", "Compras", "Categoria_Productos", "Productos", "Meseros", "Ventas"
 INSERT INTO `roles` (`ID_Role`, `Name_Role`, `State`) VALUES (NULL, 'Administrador', '1');
 
 INSERT INTO `modulepermissions` (`Role_ID`, `Module_ID`) VALUES (1, '1'), (1, '2'), (1, '3'), (1, '4'), (1, '5'), (1, '6'), (1, '7'), (1, '8'), (1, '9'), (1, '10'), (1, '11')
