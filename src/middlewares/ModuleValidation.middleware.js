@@ -104,6 +104,7 @@ export default class {
         required: true
       }]
     })
+    console.log("pixa ", permissions)
     return permissions
   }
 }
