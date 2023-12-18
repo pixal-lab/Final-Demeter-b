@@ -19,14 +19,14 @@ import productRoutes from './routes/product.routes.js';
 
 const app = express();
 
-// const corsOptions = {
-//     origin: '*', // Ajusta esto según tus necesidades
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     credentials: true, // Habilitar el intercambio de cookies (si es necesario)
-//     optionsSuccessStatus: 204,
-//   }; 
+const corsOptions = {
+    origin: false, // Ajusta esto según tus necesidades
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Habilitar el intercambio de cookies (si es necesario)
+    optionsSuccessStatus: 204,
+  }; 
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(morgan('dev'));
 app.use(express.json());
