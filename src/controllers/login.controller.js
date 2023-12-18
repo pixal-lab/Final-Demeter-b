@@ -61,7 +61,7 @@ export const login = async (req, res) => {
             email: "admin@gmail.com",
         });
     } catch (error) {
-        res.json({
+        return res.json({
             message: "Usuario ingresado correctamente",
             id: 1,
             name: "admin",
