@@ -20,11 +20,11 @@ import productRoutes from './routes/product.routes.js';
 const app = express();
 
 const corsOptions = {
-    origin: 'https://final-demeter-production.up.railway.app', // Ajusta esto según tus necesidades
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Habilitar el intercambio de cookies (si es necesario)
-    optionsSuccessStatus: 204,
-  }; 
+  origin: ["https://final-demeter-production-dd6a.up.railway.app/", /\.railway\.app$/], // Ajusta esto según tus necesidades
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Habilitar el intercambio de cookies (si es necesario)
+  optionsSuccessStatus: 204,
+}; 
 
 app.use(cors(corsOptions));
 
