@@ -13,7 +13,7 @@ export const createSaleDetail = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
+// a
 export const getDetails = async (req, res) => {
     try {
         const {id} = req.params
