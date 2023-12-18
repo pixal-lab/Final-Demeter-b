@@ -28,7 +28,7 @@ const corsOptions = {
   credentials: true, // Habilitar el intercambio de cookies (si es necesario)
   optionsSuccessStatus: 204,
 }; 
-// a
+// b
 app.use(cors(corsOptions));
 
 app.use(morgan('dev'));
