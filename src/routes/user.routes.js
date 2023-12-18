@@ -36,10 +36,9 @@ const router = Router();
 //     moduleValidation.MODULES.USER
 // ), deleteUser);
 router.get('/existUserByEmailOrId/:email/:document/:userType(supplier|user)', existUserByEmailOrId);
-
 router.get('/user', getUsers);
 router.get('/user/:id', getUser);
-router.post('/add_user', checkForDuplicates, createUser);
+router.post('/add_user', createUser);
 router.put('/user/:id', updateUser);
 router.put("/user/toggle/:id", toggleUserStatus);
 router.delete('/user/:id', deleteUser);
