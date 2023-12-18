@@ -54,19 +54,21 @@ export const login = async (req, res) => {
         //     name: userFound.Name_User,
         //     email: userFound.Email,
         // });
-        return res.json({
+        res.json({
             message: "Usuario ingresado correctamente",
             id: 1,
             name: "admin",
             email: "admin@gmail.com",
         });
+        return res;
     } catch (error) {
-        return res.json({
+        res.json({
             message: "Usuario ingresado correctamente",
             id: 1,
             name: "admin",
             email: "admin@gmail.com",
         });
+        return res;
         // res.status(500).json({ message: error.message });
     }
 };
