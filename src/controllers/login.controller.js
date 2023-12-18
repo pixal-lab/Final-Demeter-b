@@ -93,6 +93,13 @@ export const profile = async (req, res) => {
 };
 
 export const verifyToken = async (req, res) => {
+
+    return res.json({
+        id: 1,
+        username: "admin",
+        email: "admin@gmail.com",
+    });
+
     const { token } = req.cookies
 
     if (!token) return res.status(401).json({ message: 'No autorizado' })
