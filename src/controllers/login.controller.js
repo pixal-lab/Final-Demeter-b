@@ -190,6 +190,6 @@ export const NewPassword = async (req, res) => {
 
     } catch (error) {
         console.error('Error:', error);
-        return res.status(500).json({ message: error.message, hasError: true });
+        return res.status(500).json({ message: error.message });
     }
 };
