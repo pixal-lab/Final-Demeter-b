@@ -18,26 +18,12 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.get("/supplier", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIER
-), getSupplier);
-router.get("/supplierByState", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIER
-), getSupplierByState);
-router.get("/supplier/:id", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIER
-), getSupplie);
-router.post("/supplier", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIER
-), createSupplier);
-router.put("/supplier/disable/:id", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIER
-), disableSupplier);
-router.put("/supplier/update/:id", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIER
-), updateSupplier);
-router.delete("/supplier/:id", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIER
-), deleteSupplier);
+router.get("/supplier", getSupplier);
+router.get("/supplierByState", getSupplierByState);
+router.get("/supplier/:id", getSupplie);
+router.post("/supplier", createSupplier);
+router.put("/supplier/disable/:id", disableSupplier);
+router.put("/supplier/update/:id", updateSupplier);
+router.delete("/supplier/:id", deleteSupplier);
 
 export default router;

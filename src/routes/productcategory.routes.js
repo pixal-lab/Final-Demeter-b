@@ -18,26 +18,12 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.get('/productcategory', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_PRODUCT
-), getCategory_products);
-router.get('/productCategories', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_PRODUCT
-), getCategoriesProducts);
-router.post('/productcategory', authRequired, checkForDuplicates, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_PRODUCT
-), createCategory_products);
-router.put('/productcategory/disable/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_PRODUCT
-), disableCategory_products);
-router.put('/productcategory/update/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_PRODUCT
-), updateCategory_products);
-router.delete('/productcategory/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_PRODUCT
-), deleteCategory_products);
-router.get('/productcategory/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_PRODUCT
-), getOneCategory_products);
+router.get('/productcategory', getCategory_products);
+router.get('/productCategories', getCategoriesProducts);
+router.post('/productcategory', createCategory_products);
+router.put('/productcategory/disable/:id', disableCategory_products);
+router.put('/productcategory/update/:id', updateCategory_products);
+router.delete('/productcategory/:id', deleteCategory_products);
+router.get('/productcategory/:id', getOneCategory_products);
 
 export default router;

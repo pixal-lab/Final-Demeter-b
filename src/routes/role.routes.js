@@ -18,27 +18,13 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.get('/role', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SETTINGS
-), getRoles);
-router.post('/role/addModuleToRole/:roleId/:moduleId', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SETTINGS
-), addModuleToRole);
-router.post('/role/addMultipleModuleAndRole/:roleId', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SETTINGS
-), addMultipleModuleAndRole);
-router.post('/role/addMultipleModuleAndRoleAndDeleteIfExists/:roleId', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SETTINGS
-), addMultipleModuleAndRoleAndDeleteIfExists);
-router.post('/add_role', authRequired, checkForDuplicates, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SETTINGS
-), createRoles);
-router.put('/role/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SETTINGS
-), updateRole);
-router.put('/role/toggle/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SETTINGS
-), toggleRoleStatus);
+router.get('/role', getRoles);
+router.post('/role/addModuleToRole/:roleId/:moduleId', addModuleToRole);
+router.post('/role/addMultipleModuleAndRole/:roleId', addMultipleModuleAndRole);
+router.post('/role/addMultipleModuleAndRoleAndDeleteIfExists/:roleId', addMultipleModuleAndRoleAndDeleteIfExists);
+router.post('/add_role', createRoles);
+router.put('/role/:id', updateRole);
+router.put('/role/toggle/:id', toggleRoleStatus);
 
 router.post('/type', datosType);
 

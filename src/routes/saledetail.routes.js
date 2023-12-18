@@ -18,20 +18,10 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.post('/Csaledetail', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SALES
-), createSaleDetail);
-router.post('/CManyDetails', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SALES
-), createManyDetails);
-router.get('/details/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SALES
-), getDetails);
-router.put('/update', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SALES
-), lotUpd)
-router.delete('/deleteDetailS/:ID_SaleDetail', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SALES
-), deleteSaleDetail)
+router.post('/Csaledetail', createSaleDetail);
+router.post('/CManyDetails', createManyDetails);
+router.get('/details/:id', getDetails);
+router.put('/update', lotUpd)
+router.delete('/deleteDetailS/:ID_SaleDetail', deleteSaleDetail)
 
 export default router;

@@ -18,14 +18,8 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.get('/shoppingdetail', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SHOPPING
-), getshoppingDetail);
-router.get('/shoppingdetail/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SHOPPING
-), getShopDetail);
-router.post('/shoppingdetail', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SHOPPING
-), createShopping);
+router.get('/shoppingdetail', getshoppingDetail);
+router.get('/shoppingdetail/:id', getShopDetail);
+router.post('/shoppingdetail', createShopping);
 
 export default router;

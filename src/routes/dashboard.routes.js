@@ -17,20 +17,10 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.get('/getSaleByTimepc', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.DASHBOARD
-), getSalesByDate);
-router.get('/shoppingByDate', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.DASHBOARD
-), getShoppingByDate);
-router.get('/getSaleByuserpc', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.DASHBOARD
-), getSalesByUser);
-router.get('/detailsBP', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.DASHBOARD
-), countAllDetailsByProduct);
-router.get('/shoppingdetailExp', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.DASHBOARD
-), getMostExpensiveSupply);
+router.get('/getSaleByTimepc', getSalesByDate);
+router.get('/shoppingByDate', getShoppingByDate);
+router.get('/getSaleByuserpc', getSalesByUser);
+router.get('/detailsBP', countAllDetailsByProduct);
+router.get('/shoppingdetailExp', getMostExpensiveSupply);
 
 export default router;

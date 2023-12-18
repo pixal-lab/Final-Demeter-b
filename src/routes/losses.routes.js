@@ -18,14 +18,8 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.get("/losses", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIES
-), getLosses);
-router.get("/losses/:id", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIES
-), getLoss);
-router.post("/losses", authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.SUPPLIES
-), createLoss);
+router.get("/losses", getLosses);
+router.get("/losses/:id", getLoss);
+router.post("/losses", createLoss);
 
 export default router;

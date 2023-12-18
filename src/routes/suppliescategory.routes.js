@@ -17,23 +17,11 @@ const moduleValidation = new ModuleValidationMiddleware(
     }
 )
 
-router.get('/suppliescategory', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_SUPPLIES
-), getCategory_supplies);
-router.post('/suppliescategory', authRequired, checkForDuplicates, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_SUPPLIES
-), createCategory_supplies);
-router.put('/suppliescategory/disable/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_SUPPLIES
-), disableCategory_supplies);
-router.put('/suppliescategory/update/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_SUPPLIES
-), updateCategory_supplies);
-router.delete('/suppliescategory/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_SUPPLIES
-), deleteCategory_supplies);
-router.get('/suppliescategory/:id', authRequired, moduleValidation.hasPermissions(
-    moduleValidation.MODULES.CATEGORY_SUPPLIES
-), getOneCategory_supplies);
+router.get('/suppliescategory', getCategory_supplies);
+router.post('/suppliescategory', createCategory_supplies);
+router.put('/suppliescategory/disable/:id', disableCategory_supplies);
+router.put('/suppliescategory/update/:id', updateCategory_supplies);
+router.delete('/suppliescategory/:id', deleteCategory_supplies);
+router.get('/suppliescategory/:id', getOneCategory_supplies);
 
 export default router;
